@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>StudySphere</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700&family=Silkscreen:wght@400;700&family=Space+Grotesk:wght@400;600&family=Caveat:wght@600;700&family=Nunito:wght@400;700&family=Fraunces:wght@600;800&family=DM+Sans:wght@400;600&display=swap" rel="stylesheet">
+<style>
+[data-theme=doodle]{--bg:#FFF1CC;--card:#fff;--ink:#27285C;--mute:#6b6c9a;--a:#FF6B6B;--b:#2EC4B6;--hf:"Baloo 2",cursive;--bf:"Baloo 2",system-ui,sans-serif;--r:22px;--bw:3px;--sh:5px 5px 0 var(--ink)}
+[data-theme=pop]{--bg:#1B1340;--card:#2A1F5C;--ink:#F4EFFF;--mute:#b5a9e6;--a:#FFD23F;--b:#5EF2C0;--hf:"Silkscreen",monospace;--bf:"Space Grotesk",system-ui,sans-serif;--r:6px;--bw:2px;--sh:4px 4px 0 var(--a)}
+[data-theme=sunset]{--bg:#FFF8EC;--card:#fffdf7;--ink:#3A2A2A;--mute:#8a7469;--a:#E4572E;--b:#4A7C9B;--hf:"Caveat",cursive;--bf:"Nunito",system-ui,sans-serif;--r:14px;--bw:1.5px;--sh:2px 3px 0 rgba(58,42,42,.25)}
+[data-theme=matcha]{--bg:#E6EEDA;--card:#F7FAF0;--ink:#24392A;--mute:#5d7463;--a:#3F7D4E;--b:#D98E3F;--hf:"Fraunces",serif;--bf:"DM Sans",system-ui,sans-serif;--r:18px;--bw:1px;--sh:0 6px 18px rgba(36,57,42,.12)}
+[data-theme=library]{--bg:#12141C;--card:#1C1F2B;--ink:#EDE6D6;--mute:#9a97a8;--a:#F2B35E;--b:#7FB7BE;--hf:"Fraunces",serif;--bf:"DM Sans",system-ui,sans-serif;--r:16px;--bw:1px;--sh:0 8px 24px rgba(0,0,0,.4)}
+*{box-sizing:border-box}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font:16px/1.5 var(--bf)}
+[data-theme=sunset] body,body[data-theme=sunset]{background-image:repeating-linear-gradient(transparent 0 31px,rgba(74,124,155,.18) 31px 32px)}
+body[data-theme=pop]{background-image:radial-gradient(rgba(255,210,63,.12) 1.5px,transparent 1.5px);background-size:22px 22px}
+h1,h2,h3{font-family:var(--hf);margin:.2em 0;line-height:1.15}
+h1{font-size:2.1rem}h2{font-size:1.45rem}h3{font-size:1.1rem}
+[data-theme=sunset] h1,[data-theme=sunset] h2{font-size:2.3rem}
+small,.mute{color:var(--mute)}
+#app{max-width:760px;margin:0 auto;padding:12px 14px 96px}
+.card{background:var(--card);border:var(--bw) solid var(--ink);border-radius:var(--r);box-shadow:var(--sh);padding:14px;margin:14px 0}
+[data-theme=matcha] .card,[data-theme=library] .card{border-color:color-mix(in srgb,var(--ink) 18%,transparent)}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer;border:var(--bw) solid var(--ink);background:var(--a);color:#fff;border-radius:calc(var(--r)*.6);padding:9px 14px;min-height:44px;font-weight:700;transition:transform .12s}
+[data-theme=pop] button.pri,[data-theme=library] button.pri{color:#1B1340}
+button:active{transform:translateY(2px) scale(.98)}
+button.ghost{background:transparent;color:var(--ink)}
+button.on{background:var(--b);color:#fff}
+[data-theme=library] button.on,[data-theme=pop] button.on{color:#12141C}
+button.sm{min-height:36px;padding:4px 10px;font-size:.9rem}
+input,select,textarea{width:100%;background:var(--bg);border:var(--bw) solid var(--ink);border-radius:calc(var(--r)*.6);padding:10px;min-height:44px;margin:4px 0}
+textarea{min-height:90px}
+label{font-weight:700;font-size:.9rem;display:block;margin-top:8px}
+:focus-visible{outline:3px solid var(--b);outline-offset:2px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.row>*{flex:0 0 auto}.row>.grow{flex:1 1 140px}
+.grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
+.top{display:flex;align-items:center;gap:12px;padding:6px 0}.top div:nth-child(2){flex:1;line-height:1.2}.top small{display:block}
+.ib{background:var(--card);color:var(--ink);padding:4px 12px}
+nav{position:fixed;left:0;right:0;bottom:0;display:flex;justify-content:center;gap:4px;background:var(--card);border-top:var(--bw) solid var(--ink);padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px));z-index:5}
+nav button{flex:1;max-width:120px;background:transparent;color:var(--mute);border:0;font-size:.75rem;padding:4px;display:flex;flex-direction:column;align-items:center;line-height:1.2}
+nav button b{font-size:1.3rem}
+nav button.cur{color:var(--ink);background:color-mix(in srgb,var(--a) 22%,transparent);border-radius:12px}
+.orb{width:46px;height:46px;border-radius:50% 50% 46% 54%;background:radial-gradient(circle at 30% 30%,var(--b),var(--a));border:var(--bw) solid var(--ink);display:flex;gap:8px;align-items:center;justify-content:center;animation:fl 3.2s ease-in-out infinite;flex:none}
+.orb i{width:7px;height:11px;background:#fff;border:2px solid var(--ink);border-radius:50%;animation:bl 4s infinite}
+@keyframes fl{50%{transform:translateY(-5px) rotate(3deg)}}@keyframes bl{94%{transform:scaleY(1)}97%{transform:scaleY(.1)}}
+.chip{display:inline-block;border:var(--bw) solid var(--ink);border-radius:99px;padding:2px 10px;margin:2px;font-size:.85rem;background:var(--bg)}
+.bar{height:12px;border:var(--bw) solid var(--ink);border-radius:99px;overflow:hidden;background:var(--bg)}.bar i{display:block;height:100%;background:var(--b);transition:width .5s}
+.big{font-size:1.2rem;padding:18px}
+.tc{cursor:default}.tc [data-theme]{pointer-events:none}
+.q{background:color-mix(in srgb,var(--b) 18%,transparent);border-radius:12px;padding:8px 10px;margin:6px 0}
+.tm{font:700 3.2rem var(--hf);text-align:center}
+#toast{position:fixed;left:50%;bottom:calc(86px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:8px 16px;border-radius:99px;z-index:9;opacity:0;pointer-events:none;transition:opacity .25s;max-width:90%;text-align:center}
+#toast.s{opacity:1}
+.err{color:var(--a);font-weight:700}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style></head>
+<body><div id="app"></div><div id="toast" role="status" aria-live="polite"></div>
+<script>
+const $=s=>document.querySelector(s),esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const uid=()=>Math.random().toString(36).slice(2,9);
+const ymd=d=>new Date(d.getTime()-d.getTimezoneOffset()*6e4).toISOString().slice(0,10);
+const today=()=>ymd(new Date()),addD=n=>{const d=new Date();d.setDate(d.getDate()+n);return ymd(d)};
+const dleft=d=>Math.round((new Date(d+"T00:00")-new Date(today()+"T00:00"))/864e5);
+const fmt=d=>new Date(d+"T00:00").toLocaleDateString(undefined,{weekday:"short",day:"numeric",month:"short"});
+let S=null;try{S=JSON.parse(localStorage.getItem("ss1"))}catch(e){}
+S=S||{p:null,subs:[],notes:[],tasks:[],att:{},habits:[],refl:[],mins:25,target:75};
+const save=()=>{try{localStorage.setItem("ss1",JSON.stringify(S))}catch(e){toast("Could not save in this browser.")}cloudPush()};
+let SB=null,USER=null,CFG=null,pushT=null;
+const loadJs=u=>new Promise((ok,no)=>{const s=document.createElement("script");s.src=u;s.onload=ok;s.onerror=no;document.head.appendChild(s)});
+function cloudPush(){if(!SB||!USER)return;clearTimeout(pushT);pushT=setTimeout(async()=>{const{error}=await SB.from("user_state").upsert({user_id:USER.id,data:S,updated_at:new Date().toISOString()});if(error)toast("Cloud sync failed. Your data is safe on this device.")},1500)}
+async function pull(){const{data,error}=await SB.from("user_state").select("data").eq("user_id",USER.id).maybeSingle();if(error)return toast("Could not reach cloud save.");
+if(data&&data.data&&data.data.p){if(!S.p||confirm("Cloud data found for this account.\nOK = use cloud data. Cancel = keep this device and overwrite the cloud.")){S=data.data;try{localStorage.setItem("ss1",JSON.stringify(S))}catch(e){}toast("Loaded your cloud data")}else cloudPush()}else if(S.p)cloudPush()}
+async function initCloud(){try{const r=await fetch("/api/config");if(!r.ok)return;CFG=await r.json();await loadJs("https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js");SB=supabase.createClient(CFG.url,CFG.key);const{data}=await SB.auth.getSession();USER=data.session?data.session.user:null;if(USER)await pull();R()}catch(e){console.warn("Cloud sync off",e)}}
+async function readPdf(f){try{if(!window.pdfjsLib){const B="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/";await loadJs(B+"pdf.min.js");const w=await(await fetch(B+"pdf.worker.min.js")).text();pdfjsLib.GlobalWorkerOptions.workerSrc=URL.createObjectURL(new Blob([w],{type:"text/javascript"}))}
+const d=await pdfjsLib.getDocument({data:await f.arrayBuffer()}).promise,o=[];for(let i=1;i<=d.numPages;i++){const c=await(await d.getPage(i)).getTextContent(),t=c.items.map(x=>x.str).join(" ").replace(/\s+/g," ").trim();if(t)o.push(t)}
+if(!o.length)return toast(f.name+" has no selectable text. Scanned PDFs need OCR, which is not supported.");addNote(f.name,o.join("\n\n"));save();R()}catch(e){toast("Could not read "+f.name)}}
+let ui={tab:"home",step:0,g:{},sub:null,ans:"",t:null,left:0,all:false};
+function toast(m){const t=$("#toast");t.textContent=m;t.className="s";clearTimeout(toast.h);toast.h=setTimeout(()=>t.className="",2600)}
+const TH=[
+{id:"doodle",n:"Doodle Jungle",tag:"Bouncy, bold and sticker-bright",a:5,z:13},
+{id:"pop",n:"Pixel Pop",tag:"Arcade vibes, mint and gold",a:12,z:19},
+{id:"sunset",n:"Sunset Notebook",tag:"Handwritten, ruled-paper calm",a:10,z:30},
+{id:"matcha",n:"Matcha Café",tag:"Soft greens, serif and slow",a:17,z:70},
+{id:"library",n:"Midnight Library",tag:"Dark, amber-lit, deep focus",a:16,z:70}];
+const mine=()=>S.subs.find(s=>s.id===ui.sub)||S.subs[0];
+const parseSubs=t=>{let x=t.replace(/^[\s\S]*?\b(subjects?\s*(are|is|:)|:)/i,"").replace(/\band\b|&/gi,",");const seen=new Set();return x.split(/[,;\n]/).map(s=>s.trim().replace(/[.\s]+$/,"")).filter(s=>{const k=s.toLowerCase();if(!s||seen.has(k))return false;seen.add(k);return true})};
+function mic(id){const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR)return toast("Voice typing is not supported here. Try Chrome, or just type.");const r=new SR();r.lang=navigator.language||"en-IN";r.onresult=e=>{const el=$("#"+id);el.value+=(el.value?" ":"")+e.results[0][0].transcript;el.dispatchEvent(new Event("input",{bubbles:true}))};r.onerror=()=>toast("Could not hear that. Please try again or type.");r.start();toast("Listening…")}
+/* ---------- gate ---------- */
+function gate(){const g=ui.g,s=ui.step;
+if(s==0)return `<div class=card style="text-align:center;margin-top:8vh"><div class=orb style="margin:0 auto 10px;width:70px;height:70px"><i></i><i></i></div><h1>Hey! Who is studying today?</h1><p class=mute>StudySphere shapes itself around you. Two quick questions, then pick a look.</p><div class=grid><button class=big data-a=lvl data-v=school>🎒 I am in school</button><button class="big on" data-a=lvl data-v=college>🎓 I am in college / university</button></div></div>`;
+if(s==1)return `<div class=card><h2>A little about you</h2><label for=nm>What should we call you?</label><input id=nm maxlength=30 value="${esc(g.name||"")}" autocomplete=off><label for=ag>Your age</label><input id=ag type=number min=5 max=80 value="${esc(g.age||"")}"><label for=gd>Gender (optional)</label><select id=gd>${["Prefer not to say","Girl / Woman","Boy / Man","Non-binary"].map(o=>`<option ${g.gender==o?"selected":""}>${o}</option>`).join("")}</select><small>Used only to shuffle which theme we show first. You can pick any theme, always. Everything stays in this browser.</small><p class=err id=e1></p><div class=row><button class=ghost data-a=back>Back</button><button data-a=n1>Next</button></div></div>`;
+if(s==2){let l=TH.filter(t=>ui.all||(g.age>=t.a&&g.age<=t.z));if(!l.length)l=TH;const rot=({"Girl / Woman":1,"Boy / Man":2,"Non-binary":3})[g.gender]||0;l=l.map((_,i)=>l[(i+rot)%l.length]);
+return `<h2 style="margin-top:14px">Pick your look</h2><p class=mute>${ui.all?"All themes":"Suggested for age "+g.age}. Change it any time in Settings.</p>${l.map(t=>`<div class="card tc" data-theme=${t.id} style="background:var(--bg)"><div class=row><div class=grow><h2>${t.n}</h2><small>${t.tag}</small></div><button data-a=theme data-v=${t.id} style="pointer-events:auto">Use this</button></div><div class=row style="margin-top:8px"><span class=chip style="background:var(--a);color:#fff">Aa</span><span class=chip style="background:var(--b)">Aa</span><span class=chip>Study time!</span></div></div>`).join("")}<div class=row><button class=ghost data-a=back>Back</button><button class=ghost data-a=all>${ui.all?"Show suggested":"Show all themes"}</button></div>`}
+return `<div class=card><h2>${g.level=="school"?"Your class":"Your course"}</h2><label for=co>${g.level=="school"?"Class and board (e.g. Class 10 CBSE)":"Course, year and institution"}</label><input id=co placeholder="${g.level=="school"?"Class 10 CBSE":"B.Tech CSE, 4th year"}"><label for=sb>Your subjects: type or tap the mic and say them</label><textarea id=sb placeholder="Machine Learning, Big Data, Blockchain and Business Analytics"></textarea><div class=row><button class=ghost data-a=mic data-v=sb>🎤 Speak</button></div><p><small>We found:</small> <span id=chips></span></p><p class=err id=e1></p><div class=row><button class=ghost data-a=back>Back</button><button data-a=fin>Create my workspace</button></div></div>`}
+/* ---------- app ---------- */
+const est=t=>t.s+t.r+t.p;
+const subPct=s=>s.topics.length?Math.round(s.topics.reduce((a,t)=>a+est(t),0)/(s.topics.length*3)*100):0;
+function app(){const V={home,learn,tutor,plan,life,set};
+return `<header class=top><div class=orb><i></i><i></i></div><div><b>Hi ${esc(S.p.name)}</b><small>${esc(S.p.course)}</small></div><button class=ib data-a=tab data-v=set aria-label=Settings>⚙️</button></header><main>${V[ui.tab]()}</main><nav aria-label="Main">${[["home","🏠","Home"],["learn","📚","Learn"],["tutor","💬","Tutor"],["plan","🗓️","Planner"],["life","🌱","My Life"]].map(([k,e,n])=>`<button data-a=tab data-v=${k} class="${ui.tab==k?"cur":""}" ${ui.tab==k?'aria-current=page':""}><b>${e}</b>${n}</button>`).join("")}</nav>`}
+function home(){const up=S.tasks.filter(t=>!t.done).sort((a,b)=>a.date.localeCompare(b.date)).slice(0,4);
+let nx=null;for(const s of S.subs)for(const t of s.topics){const sc=(t.due&&t.due<=today()?0:!t.s?2:!t.r?3:!t.p?4:9);if(!nx||sc<nx.sc)nx={sc,s,t}}
+const msg=!nx||nx.sc==9?"Add topics in Learn to get a study suggestion.":nx.sc==0?`Revision is due: ${esc(nx.t.name)} (${esc(nx.s.name)})`:nx.sc==2?`Start learning: ${esc(nx.t.name)} (${esc(nx.s.name)})`:nx.sc==3?`Try recalling without notes: ${esc(nx.t.name)}`:`Practise: ${esc(nx.t.name)}`;
+return `<div class=card><h3>Next study step</h3><p>${msg}</p><div class=row><button data-a=tab data-v=learn>Open Learn</button><button class=ghost data-a=tab data-v=life>Start a focus block</button></div></div>
+<div class=card><h3>Coming up</h3>${up.length?up.map(t=>`<div class=row><span class=chip>${esc(t.type)}</span><span class=grow>${esc(t.title)}</span><small class="${dleft(t.date)<0?"err":""}">${dleft(t.date)<0?"overdue · ":""}${fmt(t.date)}</small></div>`).join(""):`<p class=mute>Nothing due. Add assignments and exams in Planner.</p>`}<button class="ghost sm" data-a=tab data-v=plan>Open Planner</button></div>
+<div class=card><h3>Progress estimate</h3><small>Based on studied, recalled and practised signals per topic. It is an estimate, not mastery.</small>${S.subs.map(s=>`<p style="margin:10px 0 2px"><b>${esc(s.name)}</b> <small>${s.topics.length} topics · ${subPct(s)}%</small></p><div class=bar><i style="width:${subPct(s)}%"></i></div>`).join("")}</div>`}
+function learn(){const s=mine();if(!s)return `<div class=card><p>No subjects yet. Add one in Settings.</p></div>`;ui.sub=s.id;const notes=S.notes.filter(n=>n.sid==s.id);
+return `<div class=row style="margin-top:8px">${S.subs.map(x=>`<button class="sm ${x.id==s.id?"on":"ghost"}" data-a=sub data-v=${x.id}>${esc(x.name)}</button>`).join("")}</div>
+<div class=card><h2>${esc(s.name)}</h2>${s.topics.length?s.topics.map(t=>`<div class=q><b>${esc(t.name)}</b> <small>${est(t)}/3 signals${t.due?" · revise "+fmt(t.due):""}</small><div class=row>${[["s","Studied"],["r","Recalled"],["p","Practised"]].map(([k,n])=>`<button class="sm ${t[k]?"on":"ghost"}" data-a=tg data-k=${k} data-t=${t.id} aria-pressed=${!!t[k]}>${t[k]?"✓ ":""}${n}</button>`).join("")}<button class="sm ghost" data-a=dt data-t=${t.id} aria-label="Delete ${esc(t.name)}">🗑</button></div></div>`).join(""):`<p class=mute>No topics yet. Add one below or paste your syllabus.</p>`}
+<label for=tn>Add a topic</label><div class=row><input class=grow id=tn><button data-a=at>Add</button></div>
+<label for=sy>Paste syllabus (one topic per line)</label><textarea id=sy></textarea><button class=ghost data-a=sy>Import topics</button></div>
+<div class=card><h3>Study notes for ${esc(s.name)}</h3><small>Tutor answers only from these. Upload .txt, .md or text-based .pdf files, or paste text. Scanned PDFs and PPTX are not supported.</small>
+<input id=nt placeholder="Note title"><textarea id=nb placeholder="Paste notes here"></textarea><div class=row><button data-a=an>Save note</button><label class=row style="margin:0"><input type=file id=fl accept=".txt,.md,.csv,.pdf" multiple style="display:none"><span class=chip style="cursor:pointer;min-height:44px;display:inline-flex;align-items:center">📎 Upload files</span></label></div>
+${notes.map(n=>`<div class=q><b>${esc(n.title)}</b> <small>${n.text.length} chars</small> <button class="sm ghost" data-a=dn data-t=${n.id} aria-label="Delete note">🗑</button></div>`).join("")}</div>`}
+/* ---------- local keyword RAG ---------- */
+const STOP=new Set("the a an and or of to in on is are was were for with as by at from that this it be how what why when which do does explain tell about me".split(" "));
+const tok=t=>(t.toLowerCase().match(/[a-z0-9]+/g)||[]).filter(w=>w.length>2&&!STOP.has(w));
+function chunks(sid){const o=[];S.notes.filter(n=>sid=="all"||n.sid==sid).forEach(n=>n.text.split(/\n\s*\n|(?<=[.!?])\s+(?=[A-Z])/).map(x=>x.trim()).flatMap(x=>x.length>1000?x.match(/[\s\S]{1,900}(?:\s|$)/g).map(y=>y.trim()):[x]).filter(x=>x.length>25).forEach((c,i)=>o.push({n,i:i+1,c})));return o}
+function ask(q,sid){ask.last=[];const C=chunks(sid),qt=[...new Set(tok(q))];if(!qt.length)return `<p class=err>Please ask a fuller question.</p>`;
+const df={};qt.forEach(w=>df[w]=C.filter(x=>tok(x.c).includes(w)).length);
+const sc=C.map(x=>{const tk=tok(x.c);let m=0,s=0;qt.forEach(w=>{const f=tk.filter(y=>y==w).length;if(f){m++;s+=f*Math.log(1+C.length/df[w])}});return{...x,m,s,r:m/qt.length}}).filter(x=>x.r>=.5).sort((a,b)=>b.s-a.s).slice(0,3);
+if(!sc.length)return `<div class=q><b>Not enough evidence in your notes.</b><br>I looked through ${C.length} passages and found nothing that matches. Add notes about this topic in Learn, or rephrase.</div>`;
+ask.last=sc;return sc.map((x,i)=>`<div class=q><small>[${i+1}] ${esc(x.n.title)} · passage ${x.i} · match ${Math.round(x.r*100)}%</small><br>${esc(x.c)}</div>`).join("")+`<small>Excerpts retrieved from your notes by keyword search. Nothing here was generated.</small>`}
+function tutor(){return `<div class=card><div class=row><div class=orb><i></i><i></i></div><div class=grow><h2>Ask your notes</h2><small>Keyword search with citations. Honest “not enough evidence” when it cannot find an answer.</small></div></div>
+<label for=sc>Search in</label><select id=sc><option value=all>All subjects</option>${S.subs.map(s=>`<option value=${s.id} ${s.id==ui.sub?"selected":""}>${esc(s.name)}</option>`).join("")}</select>
+<label for=q>Your question</label><input id=q><div class=row><button data-a=ask>Ask</button><button class=ghost data-a=mic data-v=q>🎤 Speak</button><button class=ghost data-a=quiz>🧠 Quiz me</button></div></div><div id=out>${ui.ans}</div>`}
+/* ---------- planner + attendance ---------- */
+function plan(){const T=S.tasks.slice().sort((a,b)=>a.done-b.done||a.date.localeCompare(b.date));
+return `<div class=card><h2>Deadlines</h2><input id=tt placeholder="e.g. ML assignment 3"><div class=row><input class=grow id=td type=date value="${addD(7)}"><select class=grow id=ty>${["Assignment","Test","Exam","Practical","Project"].map(x=>`<option>${x}</option>`).join("")}</select></div><button data-a=atk>Add</button>
+${T.length?T.map(t=>`<div class="row q"><button class="sm ${t.done?"on":"ghost"}" data-a=dk data-t=${t.id} aria-pressed=${t.done} aria-label="Mark done">${t.done?"✓":"○"}</button><span class=grow style="${t.done?"text-decoration:line-through;opacity:.6":""}"><span class=chip>${esc(t.type)}</span> ${esc(t.title)}</span><small>${fmt(t.date)}</small><button class="sm ghost" data-a=dtk data-t=${t.id} aria-label=Delete>🗑</button></div>`).join(""):`<p class=mute>No deadlines yet.</p>`}</div>
+<div class=card><h2>Attendance</h2><small>A personal tracker you fill in yourself. It is not your official record.</small><label for=tg>Target %</label><input id=tg type=number min=1 max=99 value=${S.target} data-a=tgt>
+${S.subs.map(s=>{const a=S.att[s.id]||{p:0,t:0},pc=a.t?a.p/a.t*100:null,T=S.target;let m="Log a class to begin.";if(a.t)m=pc>=T?`You can miss up to ${Math.max(0,Math.floor(a.p*100/T-a.t))} more and stay at ${T}%+.`:`Attend the next ${Math.ceil((T*a.t-100*a.p)/(100-T))} classes in a row to reach ${T}%.`;
+return `<div class=q><b>${esc(s.name)}</b> · ${a.p}/${a.t} · <b class="${a.t&&pc<T?"err":""}">${a.t?pc.toFixed(1)+"%":"–"}</b><br><small>${m}</small><div class=row><button class="sm on" data-a=att data-v=p data-t=${s.id}>Present</button><button class="sm ghost" data-a=att data-v=a data-t=${s.id}>Absent</button><button class="sm ghost" data-a=att data-v=u data-t=${s.id}>Undo last</button></div></div>`}).join("")}</div>`}
+/* ---------- life ---------- */
+function life(){const days=[...Array(7)].map((_,i)=>addD(i-6)),m=Math.floor(ui.left/60),s=ui.left%60,L=ui.left||S.mins*60;
+return `<div class=card><h2>Focus</h2><div class=tm id=tm>${String(Math.floor(L/60)).padStart(2,"0")}:${String(L%60).padStart(2,"0")}</div><div class=row style="justify-content:center"><button data-a=ft>${ui.t?"Pause":"Start"}</button><button class=ghost data-a=fr>Reset</button><label class=row style="margin:0">Minutes <input id=fm type=number min=1 max=180 value=${S.mins} style="width:80px" data-a=fmin></label></div></div>
+<div class=card><h2>Habits</h2><small>Build good ones, ease off others. No streak pressure, just a gentle 7-day view.</small>
+${S.habits.map(h=>`<div class=q><b>${esc(h.name)}</b> <span class=chip>${h.k=="build"?"building":"easing off"}</span><div class=row>${days.map(d=>`<span title="${d}" style="font-size:1.3rem" aria-hidden=true>${h.d[d]?"🟢":"⚪"}</span>`).join("")}<button class="sm ${h.d[today()]?"on":"ghost"}" data-a=hb data-t=${h.id}>${h.k=="build"?"Did it today":"Held off today"}</button><button class="sm ghost" data-a=dh data-t=${h.id} aria-label=Delete>🗑</button></div>${h.k=="reduce"?"<small>Any day counts. Missing one is just a data point.</small>":""}</div>`).join("")}
+<div class=row><input class=grow id=hn placeholder="e.g. Drink water / Scroll less at night"><select id=hk><option value=build>Build</option><option value=reduce>Ease off</option></select><button data-a=ah>Add</button></div></div>
+<div class=card><h2>What did I learn today?</h2><textarea id=rf></textarea><button data-a=rf>Save reflection</button>${S.refl.slice(-3).reverse().map(r=>`<div class=q><small>${fmt(r.d)}</small><br>${esc(r.t)}</div>`).join("")}</div>`}
+const cloudCard=()=>`<div class=card><h2>Cloud sync</h2>${!CFG?"<p class=mute>Cloud sync is not enabled on this site. Your data stays on this device.</p>":USER?`<p>Signed in as <b>${esc(USER.email)}</b>. Changes save to your account automatically.</p><div class=row><button data-a=sync>Sync now</button><button class=ghost data-a=so>Sign out</button></div>`:`<small>Optional. Sign in to keep your data across devices and to use the AI tutor.</small><label for=em>Email</label><input id=em type=email autocomplete=email><label for=pw>Password (8+ characters)</label><input id=pw type=password autocomplete=current-password><div class=row><button data-a=si>Sign in</button><button class=ghost data-a=su>Create account</button></div>`}</div>`;
+function set(){return `<div class=card><h2>Theme</h2><div class=row>${TH.map(t=>`<button class="sm ${S.p.theme==t.id?"on":"ghost"}" data-a=theme data-v=${t.id}>${t.n}</button>`).join("")}</div></div>
+<div class=card><h2>Subjects</h2>${S.subs.map(s=>`<span class=chip>${esc(s.name)}</span>`).join("")}<div class=row><input class=grow id=ns placeholder="Add a subject"><button data-a=as>Add</button></div></div>
+${cloudCard()}<div class=card><h2>Privacy and data</h2><p>Everything lives only in this browser. Notes stay on this device. When the AI tutor is switched on by the site owner, only the few passages matching your question are sent to the AI provider to write an answer.</p><div class=row><button data-a=exp>Export my data</button><button class=ghost data-a=wipe>Delete everything</button></div></div>`}
+/* ---------- events ---------- */
+const val=id=>($("#"+id)||{value:""}).value.trim();
+const A={
+lvl(v){ui.g.level=v;ui.step=1},
+back(){ui.step=Math.max(0,ui.step-1)},
+all(){ui.all=!ui.all},
+n1(){const age=+val("ag"),name=val("nm");ui.g.name=name;ui.g.age=age;ui.g.gender=$("#gd").value;if(!name||!(age>=5&&age<=80)){$("#e1").textContent="Please add a name and an age between 5 and 80.";return false}ui.step=2},
+theme(v){if(S.p){S.p.theme=v;save();toast("Theme changed");return}ui.g.theme=v;ui.step=3},
+fin(){const l=parseSubs(val("sb"));if(!val("co")||!l.length){$("#e1").textContent="Add your course and at least one subject.";return false}
+S.p={name:ui.g.name,age:ui.g.age,gender:ui.g.gender,level:ui.g.level,theme:ui.g.theme,course:val("co")};S.subs=l.map(n=>({id:uid(),name:n,topics:[]}));S.subs.forEach(s=>S.att[s.id]={p:0,t:0,h:[]});save();ui.tab="home";toast("Workspace ready!")},
+tab(v){ui.tab=v},sub(v){ui.sub=v},
+mic(v){mic(v);return false},
+tg(e){const s=mine(),t=s.topics.find(x=>x.id==e.dataset.t),k=e.dataset.k;t[k]=t[k]?0:1;if(k=="r")t.due=t.r?addD(3):null;save()},
+dt(e){if(!confirm("Delete this topic?"))return false;const s=mine();s.topics=s.topics.filter(x=>x.id!=e.dataset.t);save()},
+at(){const n=val("tn");if(!n)return false;const s=mine();if(s.topics.some(t=>t.name.toLowerCase()==n.toLowerCase()))return toast("That topic already exists."),false;s.topics.push({id:uid(),name:n,s:0,r:0,p:0,due:null});save()},
+sy(){const s=mine(),ex=new Set(s.topics.map(t=>t.name.toLowerCase()));let c=0;val("sy").split("\n").map(x=>x.trim().replace(/^[-*\d.\s]+/,"")).filter(Boolean).forEach(n=>{if(!ex.has(n.toLowerCase())){ex.add(n.toLowerCase());s.topics.push({id:uid(),name:n,s:0,r:0,p:0,due:null});c++}});save();toast(c+" topics added (duplicates skipped)")},
+an(){const t=val("nt"),b=val("nb");if(!b)return toast("Paste some text first."),false;addNote(t||"Untitled note",b);save()},
+dn(e){S.notes=S.notes.filter(n=>n.id!=e.dataset.t);save()},
+ask(){const q=val("q");if(!q)return false;const kw=ask(q,val("sc")||"all"),ps=(ask.last||[]).map(x=>({title:x.n.title,text:x.c.slice(0,1500)})),you=`<div class=card><b>You:</b> ${esc(q)}</div>`,base=you+`<div class=card>${kw}</div>`;ui.ans=base;
+if(ps.length&&location.protocol.startsWith("http")){ui.ans=you+`<div class=card><small>Asking the AI tutor…</small></div><div class=card>${kw}</div>`;
+(SB?SB.auth.getSession().then(r=>r.data.session&&r.data.session.access_token):Promise.resolve(null)).then(tok=>fetch("/api/chat",{method:"POST",headers:Object.assign({"Content-Type":"application/json"},tok?{Authorization:"Bearer "+tok}:{}),body:JSON.stringify({question:q,passages:ps})})).then(r=>r.ok?r.json():(r.status==401?{login:1}:null)).then(d=>{const note=d&&d.login?"Sign in (Settings, Cloud sync) to use the AI tutor. This is keyword search only.":"The AI tutor is not available right now, so this is keyword search only.";ui.ans=d&&d.answer?you+`<div class=card><b>AI tutor</b> <small>(${esc(d.provider)}, answered only from the passages below)</small><p style="white-space:pre-wrap">${esc(d.answer)}</p></div><div class=card><small>Sources sent to the AI:</small>${kw}</div>`:base+`<small>${note}</small>`;if(ui.tab=="tutor")R()}).catch(()=>{ui.ans=base;if(ui.tab=="tutor")R()})}},
+quiz(){const C=chunks($("#sc").value);if(!C.length){ui.ans=`<div class=card>Add some notes first, then I can quiz you.</div>`;return}
+const x=C[Math.floor(Math.random()*C.length)],w=(x.c.match(/[A-Za-z]{6,}/g)||[]).sort((a,b)=>b.length-a.length)[0];
+if(!w){ui.ans=`<div class=card>That passage was too short. Try again.</div>`;return}
+ui.ans=`<div class=card><b>Fill the blank</b> <small>(${esc(x.n.title)})</small><p>${esc(x.c).replace(new RegExp(w,"i"),"<b>_____</b>")}</p><details><summary>Reveal answer</summary><b>${esc(w)}</b></details></div>`},
+atk(){if(!val("tt")||!val("td"))return toast("Add a title and a date."),false;S.tasks.push({id:uid(),title:val("tt"),date:val("td"),type:$("#ty").value,done:0});save();toast("Added")},
+dk(e){const t=S.tasks.find(x=>x.id==e.dataset.t);t.done=t.done?0:1;save()},
+dtk(e){S.tasks=S.tasks.filter(x=>x.id!=e.dataset.t);save()},
+att(e){const a=S.att[e.dataset.t]=S.att[e.dataset.t]||{p:0,t:0,h:[]},v=e.dataset.v;a.h=a.h||[];if(v=="u"){const l=a.h.pop();if(!l)return false;a.t--;if(l=="p")a.p--}else{a.h.push(v);a.t++;if(v=="p")a.p++}save()},
+ft(){if(ui.t){clearInterval(ui.t);ui.t=null;return}if(!ui.left)ui.left=S.mins*60;ui.t=setInterval(()=>{ui.left--;const el=$("#tm");if(ui.left<=0){clearInterval(ui.t);ui.t=null;ui.left=0;toast("Focus block done. Take a breather!");R();return}if(el)el.textContent=String(Math.floor(ui.left/60)).padStart(2,"0")+":"+String(ui.left%60).padStart(2,"0")},1000)},
+fr(){clearInterval(ui.t);ui.t=null;ui.left=0},
+ah(){const n=val("hn");if(!n)return false;S.habits.push({id:uid(),name:n,k:$("#hk").value,d:{}});save()},
+hb(e){const h=S.habits.find(x=>x.id==e.dataset.t);h.d[today()]?delete h.d[today()]:h.d[today()]=1;save()},
+dh(e){if(!confirm("Delete this habit and its history?"))return false;S.habits=S.habits.filter(x=>x.id!=e.dataset.t);save()},
+rf(){if(!val("rf"))return false;S.refl.push({d:today(),t:val("rf")});save();toast("Saved")},
+as(){const n=val("ns");if(!n||S.subs.some(s=>s.name.toLowerCase()==n.toLowerCase()))return toast("Add a new subject name."),false;const s={id:uid(),name:n,topics:[]};S.subs.push(s);S.att[s.id]={p:0,t:0,h:[]};save()},
+si(){const e=val("em"),p=val("pw");if(!e||p.length<8)return toast("Enter your email and a password of 8+ characters."),false;SB.auth.signInWithPassword({email:e,password:p}).then(async({data,error})=>{if(error)return toast(error.message);USER=data.user;await pull();R()});return false},
+su(){const e=val("em"),p=val("pw");if(!e||p.length<8)return toast("Enter your email and a password of 8+ characters."),false;SB.auth.signUp({email:e,password:p}).then(async({data,error})=>{if(error)return toast(error.message);if(data.session){USER=data.user;await pull();R()}else toast("Check your email to confirm, then sign in.")});return false},
+so(){SB.auth.signOut().then(()=>{USER=null;R()});return false},
+sync(){cloudPush();toast("Syncing…")},
+exp(){const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(S,null,2)],{type:"application/json"}));a.download="studysphere-data.json";a.click()},
+wipe(){if(!confirm("Delete ALL your StudySphere data from this browser? This cannot be undone."))return false;try{localStorage.removeItem("ss1")}catch(e){}if(SB&&USER)SB.from("user_state").delete().eq("user_id",USER.id).then(()=>{});S={p:null,subs:[],notes:[],tasks:[],att:{},habits:[],refl:[],mins:25,target:75};ui.step=0;ui.g={}}};
+function addNote(title,text){const key=text.slice(0,200)+text.length;if(S.notes.some(n=>n.key==key))return toast("Duplicate note skipped"),false;S.notes.push({id:uid(),sid:mine().id,title,text,key});toast("Note saved");return true}
+document.addEventListener("click",e=>{const b=e.target.closest("[data-a]");if(!b||b.tagName=="INPUT")return;const f=A[b.dataset.a];if(!f)return;if(f.length&&b.dataset.a.match(/^(tg|dt|dn|dk|dtk|att|hb|dh)$/)){if(f(b)===false)return}else if(f(b.dataset.v)===false)return;R()});
+document.addEventListener("change",e=>{const a=e.target.dataset.a;if(a=="tgt"){S.target=Math.min(99,Math.max(1,+e.target.value||75));save();R()}if(a=="fmin"){S.mins=Math.min(180,Math.max(1,+e.target.value||25));ui.left=0;save();R()}
+if(e.target.id=="fl"){const fs=[...e.target.files];fs.forEach(f=>{if(f.size>(/\.pdf$/i.test(f.name)?15e6:2e6))return toast(f.name+" is too large, skipped.");if(/\.pdf$/i.test(f.name))return readPdf(f);const r=new FileReader();r.onload=()=>{addNote(f.name,String(r.result));save();R()};r.onerror=()=>toast("Could not read "+f.name);r.readAsText(f)})}});
+document.addEventListener("input",e=>{if(e.target.id=="sb"){const l=parseSubs(e.target.value);$("#chips").innerHTML=l.map(x=>`<span class=chip>${esc(x)}</span>`).join("")||"<small>nothing yet</small>"}});
+function R(){document.body.dataset.theme=S.p?S.p.theme:(ui.g.theme||"matcha");$("#app").innerHTML=S.p?app():gate();if(!S.p&&ui.step==3)$("#sb").dispatchEvent(new Event("input",{bubbles:true}))}
+R();initCloud();
+</script></body></html>
